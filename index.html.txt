@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perk Pharma Pvt Ltd</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;color:#1a1a2e;background:#fff}
+  :root{--navy:#1e3a6e;--blue:#2563a8;--lightblue:#e8f0fb;--red:#c0392b;--white:#fff;--gray:#f5f7fa;--text:#333}
+
+  nav{background:rgba(5,6,15,0.85);backdrop-filter:blur(10px);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:999;box-shadow:0 2px 10px rgba(0,0,0,0.3)}
+  .logo-nav{display:flex;align-items:center;gap:10px;padding:10px 0}
+  .logo-oval{background:linear-gradient(145deg,#2a4a8a,#1e3a6e);border-radius:50%;width:52px;height:38px;display:flex;align-items:center;justify-content:center;border:2px solid #aab8d0}
+  .logo-text{color:#fff;font-size:1.1rem;font-weight:700}
+  .logo-text small{display:block;font-size:0.6rem;font-weight:400;color:#aab8d0;letter-spacing:1px}
+  nav ul{list-style:none;display:flex;gap:1.5rem}
+  nav ul a{color:#ccd6f0;text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:0.5px;transition:color 0.2s}
+  nav ul a:hover{color:#fff}
+
+  /* HERO PARTICLE */
+  #hero-section{
+    position:relative;height:100vh;width:100%;overflow:hidden;
+    background:#05060f;
+    background-image:linear-gradient(0deg,rgba(30,58,110,0.25),rgba(5,6,15,0.9));
+    font-size:max(calc(min(600px,80vh)*0.03),10px);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  #particleCanvas{position:absolute;pointer-events:none;z-index:1;width:100%;height:100%;top:0;left:0}
+
+  .spotlight-wrap{pointer-events:none;position:absolute;left:0;right:0;top:0;margin:0 auto;height:100%;width:100%;overflow:hidden;z-index:0}
+  .spotlight-beam{border-radius:0 0 50% 50%;position:absolute;left:0;right:0;margin:0 auto;top:3em;width:30em;height:max(42em,86vh);background-image:conic-gradient(from 0deg at 50% -5%,transparent 45%,rgba(100,160,230,.25) 49%,rgba(100,160,230,.45) 50%,rgba(100,160,230,.25) 51%,transparent 55%);transform-origin:50% 0;filter:blur(15px) opacity(0.5);z-index:0}
+
+  .accent-lines{pointer-events:none;position:absolute;top:0;left:0;right:0;width:100%;height:100%;z-index:0}
+  .accent-h{position:absolute;right:0;left:0;margin:auto;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(186,215,247,.18),transparent);opacity:0;transform:scale(0);animation:accentload 2s ease-out 2.4s forwards}
+  .accent-v{position:absolute;top:0;width:1px;height:100%;background:rgba(186,215,247,.15);opacity:0;transform:scale(0);animation:accentload 2s ease-out 2s forwards}
+
+  .hero-content{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;text-align:center;padding:2rem}
+  .hero-badge{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#8ab8e0;font-size:0.75rem;letter-spacing:2px;padding:6px 18px;border-radius:20px;display:inline-block;margin-bottom:2rem;opacity:0;animation:fadeUp 1.4s ease-out 2.2s forwards}
+  .hero-title{font-size:clamp(2.5rem,7vw,5rem);font-weight:800;line-height:1.1;margin-bottom:0.4rem;opacity:0;animation:fadeUp 1.4s ease-out 2.4s forwards;
+    background:radial-gradient(2em 2em at 50% 50%,transparent calc(var(--p,0%) - 2em),#fff calc(var(--p,0%) - 1em),#fff calc(var(--p,0%) - 0.4em),transparent var(--p,0%)),linear-gradient(0deg,#bad1f1 30%,#9dc3f7 100%);
+    background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    text-shadow:0 2px 16px rgba(174,207,242,.24);
+    animation:fadeUp 1.4s ease-out 2.4s forwards,pulse 10s linear 3s infinite}
+  .hero-sub{font-size:clamp(0.85rem,2vw,1.1rem);color:#a8c0e0;font-style:italic;margin-bottom:1rem;letter-spacing:1px;opacity:0;animation:fadeUp 1.4s ease-out 2.6s forwards}
+  .hero-desc{color:#8aaace;font-size:clamp(0.8rem,1.5vw,1rem);max-width:520px;line-height:1.7;margin-bottom:2.5rem;opacity:0;animation:fadeUp 1.4s ease-out 2.8s forwards}
+  .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 1.4s ease-out 3s forwards}
+  .btn-primary{background:#fff;color:var(--navy);padding:13px 30px;border-radius:6px;font-weight:700;font-size:0.9rem;text-decoration:none;transition:all 0.2s}
+  .btn-primary:hover{background:#e8f0fb;transform:translateY(-2px)}
+  .btn-outline{border:2px solid rgba(255,255,255,0.35);color:#fff;padding:11px 28px;border-radius:6px;font-weight:600;font-size:0.9rem;text-decoration:none;transition:all 0.2s}
+  .btn-outline:hover{background:rgba(255,255,255,0.08)}
+  .hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:2.5rem;flex-wrap:wrap;opacity:0;animation:fadeUp 1.4s ease-out 3.2s forwards}
+  .stat-num{font-size:1.8rem;font-weight:800;color:#9dc3f7}
+  .stat-label{font-size:0.7rem;color:#6a8aae;letter-spacing:1px;text-transform:uppercase}
+
+  .mid-spot{position:absolute;top:2em;left:0;right:0;margin:0 auto;width:1.8em;height:1.8em;border-radius:50%;background:#000;box-shadow:0 0 1em 0 #98c0ef;cursor:pointer;transition:box-shadow 1s ease-in-out;z-index:3}
+
+  .scroll-hint{position:absolute;bottom:2rem;left:0;right:0;margin:auto;width:fit-content;color:#4a6a8a;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;opacity:0;animation:fadeUp 1s ease-out 4s forwards;z-index:3;display:flex;flex-direction:column;align-items:center;gap:6px}
+  .scroll-arrow{width:20px;height:20px;border-right:2px solid #4a6a8a;border-bottom:2px solid #4a6a8a;transform:rotate(45deg);animation:bounce 1.5s ease-in-out infinite}
+
+  @keyframes fadeUp{0%{opacity:0;transform:translateY(1.5em)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(6px)}}
+  @keyframes pulse{0%{--p:0%}50%{--p:300%}100%{--p:300%}}
+  @keyframes accentload{0%{opacity:0;transform:scale(0)}100%{opacity:1;transform:scale(1)}}
+  @keyframes spotlight-anim{
+    0%{transform:rotateZ(0deg) scale(1);filter:blur(15px) opacity(0.5)}
+    20%{transform:rotateZ(-1deg) scale(1.2);filter:blur(16px) opacity(0.55)}
+    40%{transform:rotateZ(2deg) scale(1.3);filter:blur(14px) opacity(0.4)}
+    60%{transform:rotateZ(-2deg) scale(1.2);filter:blur(15px) opacity(0.55)}
+    80%{transform:rotateZ(1deg) scale(1.1);filter:blur(13px) opacity(0.4)}
+    100%{transform:rotateZ(0deg) scale(1);filter:blur(15px) opacity(0.5)}
+  }
+  @property --p{syntax:'<percentage>';inherits:false;initial-value:0%}
+
+  /* SECTIONS */
+  section{padding:5rem 2rem}
+  .container{max-width:1100px;margin:0 auto}
+  .section-label{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:0.5rem}
+  .section-title{font-size:2rem;font-weight:800;color:var(--navy);margin-bottom:0.8rem}
+  .section-sub{color:#666;font-size:0.95rem;line-height:1.7;max-width:600px}
+  .divider{width:50px;height:4px;background:var(--red);border-radius:2px;margin:1rem 0 2.5rem}
+
+  .about{background:var(--gray)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-top:3rem}
+  .about-features{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+  .feat{background:#fff;border-radius:8px;padding:1rem;border-left:3px solid var(--blue)}
+  .feat h4{font-size:0.85rem;font-weight:700;color:var(--navy)}
+  .feat p{font-size:0.78rem;color:#666;margin-top:2px}
+
+  .products{background:#fff}
+  .prod-tabs{display:flex;gap:0;margin-bottom:2.5rem;border-radius:8px;overflow:hidden;border:1.5px solid var(--blue);width:fit-content}
+  .tab-btn{padding:10px 28px;font-size:0.85rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;background:#fff;color:var(--blue)}
+  .tab-btn.active{background:var(--navy);color:#fff}
+  .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.5rem}
+  .prod-card{background:#fff;border:1px solid #dde5f0;border-radius:12px;padding:1.5rem;transition:all 0.25s;cursor:pointer}
+  .prod-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(30,58,110,0.12);border-color:var(--blue)}
+  .prod-icon{width:48px;height:48px;background:var(--lightblue);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.3rem}
+  .prod-card h3{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:0.3rem}
+  .prod-card .generic{font-size:0.78rem;color:#888;font-style:italic;margin-bottom:0.5rem}
+  .prod-card .desc{font-size:0.78rem;color:#555;line-height:1.5}
+  .prod-tag{display:inline-block;font-size:0.68rem;padding:2px 8px;border-radius:10px;margin-top:0.6rem;font-weight:600}
+  .tag-blue{background:#e0ecfb;color:var(--blue)}
+  .tag-red{background:#fdecea;color:var(--red)}
+  .hidden{display:none}
+
+  .whyus{background:var(--navy);padding:5rem 2rem}
+  .whyus .section-title{color:#fff}
+  .whyus .section-sub{color:#a8c0e0}
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem;margin-top:2.5rem}
+  .why-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:1.8rem;transition:background 0.2s}
+  .why-card:hover{background:rgba(255,255,255,0.1)}
+  .why-num{font-size:2.5rem;font-weight:900;color:rgba(255,255,255,0.12);line-height:1}
+  .why-card h3{font-size:1rem;font-weight:700;color:#fff;margin:0.5rem 0 0.4rem}
+  .why-card p{font-size:0.82rem;color:#8aaace;line-height:1.6}
+
+  .contact{background:var(--gray)}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem}
+  .contact-info h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:1.2rem}
+  .contact-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:1.2rem}
+  .c-icon{width:40px;height:40px;background:var(--lightblue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+  .c-label{font-size:0.72rem;color:#888;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+  .c-val{font-size:0.9rem;color:var(--text);font-weight:500;margin-top:1px}
+  .contact-form{background:#fff;border-radius:12px;padding:2rem;border:1px solid #dde5f0}
+  .contact-form h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:1.2rem}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+  .form-group{margin-bottom:1rem}
+  .form-group label{font-size:0.78rem;font-weight:600;color:#555;display:block;margin-bottom:4px}
+  .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 12px;border:1px solid #d0dae8;border-radius:6px;font-size:0.88rem;color:var(--text);outline:none;transition:border 0.2s;font-family:inherit}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--blue)}
+  .form-group textarea{resize:vertical;min-height:90px}
+  .wa-btn{display:flex;align-items:center;gap:10px;background:#25d366;color:#fff;padding:13px 24px;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;justify-content:center;margin-top:1rem;transition:background 0.2s}
+  .wa-btn:hover{background:#1ebe5d}
+  .wa-icon{width:22px;height:22px;fill:#fff}
+  .submit-btn{width:100%;background:var(--navy);color:#fff;border:none;padding:12px;border-radius:6px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:background 0.2s;margin-top:0.5rem}
+  .submit-btn:hover{background:var(--blue)}
+
+  footer{background:#0f1f3d;padding:2.5rem 2rem;text-align:center}
+  footer p{color:#6a80a0;font-size:0.82rem}
+  footer strong{color:#aab8d0}
+
+  @media(max-width:768px){
+    .about-grid,.contact-grid{grid-template-columns:1fr}
+    .form-row{grid-template-columns:1fr}
+    nav ul{gap:0.8rem}
+    .hero-stats{gap:1.5rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-nav">
+    <div class="logo-oval">
+      <div style="text-align:center;line-height:1.1">
+        <div style="font-size:11px;font-weight:900;color:#fff;letter-spacing:-0.5px">PPL</div>
+        <div style="font-size:7px;font-weight:700;color:#ccd6f0;letter-spacing:0.5px">PERK</div>
+        <div style="font-size:5.5px;color:#aab8d0;letter-spacing:0.5px">PHARMA</div>
+      </div>
+    </div>
+    <div class="logo-text">Perk Pharma <span style="color:#e06060">Pvt Ltd</span><small>Name of Trust &amp; Quality</small></div>
+  </div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO with Particle Animation ═══ -->
+<div id="hero-section">
+
+  <!-- Spotlights -->
+  <div class="spotlight-wrap">
+    <div class="spotlight-beam" style="transform:rotate(20deg);animation:spotlight-anim 17s ease-in-out infinite"></div>
+    <div class="spotlight-beam" style="transform:rotate(-20deg);animation:spotlight-anim 14s ease-in-out infinite"></div>
+    <div class="spotlight-beam" style="transform:rotate(0deg);animation:spotlight-anim 21s ease-in-out infinite reverse"></div>
+  </div>
+
+  <!-- Accent lines -->
+  <div class="accent-lines">
+    <div class="accent-h" style="top:18%"></div>
+    <div class="accent-h" style="top:32%"></div>
+    <div class="accent-h" style="top:62%"></div>
+    <div class="accent-h" style="top:78%"></div>
+    <div class="accent-v" style="left:22%"></div>
+    <div class="accent-v" style="left:38%"></div>
+    <div class="accent-v" style="right:22%;left:auto"></div>
+    <div class="accent-v" style="right:38%;left:auto"></div>
+  </div>
+
+  <!-- Particle Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Glowing dot -->
+  <div class="mid-spot" id="midSpot" title="Toggle mode"></div>
+
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <div class="hero-badge">&#9670; Established 2004 · Gadoon, Pakistan</div>
+    <div class="hero-title" id="heroTitle">Perk Pharma</div>
+    <div class="hero-sub">"Name of Trust &amp; Quality"</div>
+    <div class="hero-desc">A leading pharmaceutical manufacturer and distributor delivering quality medicines across Pakistan since 2004 — built on science, trust, and commitment.</div>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Explore Products</a>
+      <a href="#contact" class="btn-outline">Contact Us</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Years</div></div>
+      <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Products</div></div>
+      <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
+      <div class="stat"><div class="stat-num">GMP</div><div class="stat-label">Certified</div></div>
+      <div style="width:1px;background:rgba(255,255,255,0.1)"></div>
+      <div class="stat"><div class="stat-num">PK</div><div class="stat-label">Nationwide</div></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-label">Who We Are</div>
+    <h2 class="section-title">About Perk Pharma</h2>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div>
+        <p class="section-sub">Perk Pharma (Pvt) Ltd has been a trusted name in Pakistan's pharmaceutical industry since its establishment in <strong>2004</strong>. Based at our state-of-the-art facility in Industrial Estate, Gadoon, we are committed to manufacturing and distributing high-quality pharmaceutical products that meet the healthcare needs of patients nationwide.</p>
+        <p style="color:#666;font-size:0.9rem;line-height:1.7;margin-top:1rem">Our dual-business model spans both <strong style="color:var(--navy)">manufacturing (promotional products)</strong> and <strong style="color:var(--navy)">trading (distribution)</strong> — ensuring wide therapeutic coverage and consistent supply chain excellence.</p>
+        <div class="about-features">
+          <div class="feat"><div style="font-size:1.4rem;margin-bottom:0.3rem">🏭</div><h4>Manufacturing</h4><p>GMP-compliant production facility</p></div>
+          <div class="feat"><div style="font-size:1.4rem;margin-bottom:0.3rem">🚚</div><h4>Distribution</h4><p>Nationwide trading network</p></div>
+          <div class="feat"><div style="font-size:1.4rem;margin-bottom:0.3rem">🔬</div><h4>Quality Control</h4><p>Rigorous testing standards</p></div>
+          <div class="feat"><div style="font-size:1.4rem;margin-bottom:0.3rem">📋</div><h4>Registered</h4><p>DRAP licensed &amp; compliant</p></div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(135deg,#1e3a6e,#2563a8);height:280px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem">
+        <div style="background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);border-radius:50%;width:100px;height:72px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+          <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px">PPL</div><div style="font-size:13px;font-weight:700;color:#ccd6f0;letter-spacing:1px">PERK</div><div style="font-size:9px;color:#aab8d0;letter-spacing:1px">PHARMA</div></div>
+        </div>
+        <div style="color:#fff;font-size:1.4rem;font-weight:800;text-align:center">Perk Pharma Pvt Ltd</div>
+        <div style="color:#a8c0e0;font-size:0.8rem;text-align:center;margin-top:4px">Est. 2004 · Gadoon, Pakistan</div>
+        <div style="color:#6ba3d6;font-size:0.75rem;text-align:center;margin-top:10px;font-style:italic">"Name of Trust &amp; Quality"</div>
+        <div style="margin-top:1.5rem;display:flex;gap:1.5rem">
+          <div style="text-align:center"><div style="font-size:1.4rem;font-weight:800;color:#fff">20+</div><div style="font-size:0.68rem;color:#8aaace;letter-spacing:1px">YEARS</div></div>
+          <div style="width:1px;background:rgba(255,255,255,0.2)"></div>
+          <div style="text-align:center"><div style="font-size:1.4rem;font-weight:800;color:#fff">Gadoon</div><div style="font-size:0.68rem;color:#8aaace;letter-spacing:1px">FACTORY</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="section-label">Our Portfolio</div>
+    <h2 class="section-title">Product Lines</h2>
+    <div class="divider"></div>
+    <div class="prod-tabs">
+      <button class="tab-btn active" onclick="showTab('trading',this)">Trading Products</button>
+      <button class="tab-btn" onclick="showTab('promo',this)">Promotional Products</button>
+    </div>
+    <div id="tab-trading" class="prod-grid">
+      <div class="prod-card"><div class="prod-icon">💊</div><h3>Amoxicillin 500mg</h3><div class="generic">Generic: Amoxicillin Trihydrate</div><div class="desc">Broad-spectrum antibiotic for bacterial infections. Available in capsule &amp; suspension form.</div><span class="prod-tag tag-blue">Antibiotic</span></div>
+      <div class="prod-card"><div class="prod-icon">🧴</div><h3>Metformin 500mg</h3><div class="generic">Generic: Metformin HCl</div><div class="desc">First-line oral antidiabetic medication for Type 2 diabetes management.</div><span class="prod-tag tag-blue">Antidiabetic</span></div>
+      <div class="prod-card"><div class="prod-icon">💊</div><h3>Omeprazole 20mg</h3><div class="generic">Generic: Omeprazole</div><div class="desc">Proton pump inhibitor for GERD, peptic ulcers, and acid reflux treatment.</div><span class="prod-tag tag-blue">Gastrology</span></div>
+      <div class="prod-card"><div class="prod-icon">🩺</div><h3>Amlodipine 5mg</h3><div class="generic">Generic: Amlodipine Besylate</div><div class="desc">Calcium channel blocker for hypertension and coronary artery disease.</div><span class="prod-tag tag-blue">Cardiology</span></div>
+      <div class="prod-card"><div class="prod-icon">💊</div><h3>Ciprofloxacin 250mg</h3><div class="generic">Generic: Ciprofloxacin HCl</div><div class="desc">Fluoroquinolone antibiotic for UTI, respiratory and skin infections.</div><span class="prod-tag tag-blue">Antibiotic</span></div>
+      <div class="prod-card"><div class="prod-icon">🧪</div><h3>Paracetamol 500mg</h3><div class="generic">Generic: Acetaminophen</div><div class="desc">Analgesic and antipyretic for pain relief and fever reduction.</div><span class="prod-tag tag-blue">Analgesic</span></div>
+    </div>
+    <div id="tab-promo" class="prod-grid hidden">
+      <div class="prod-card"><div class="prod-icon">💊</div><h3>Zipsor 8mg</h3><div class="generic">Generic: Lornoxicam</div><div class="desc">NSAID for moderate-to-severe pain. 2×10 tablets. MRP 480. PPL Perk Pharma's flagship product.</div><span class="prod-tag tag-red">Analgesic / NSAID</span></div>
+      <div class="prod-card"><div class="prod-icon">🔴</div><h3>PerkCef 500mg</h3><div class="generic">Generic: Cefuroxime Axetil</div><div class="desc">Second-generation cephalosporin antibiotic for respiratory &amp; skin infections.</div><span class="prod-tag tag-red">Antibiotic</span></div>
+      <div class="prod-card"><div class="prod-icon">💊</div><h3>PerkVit Syrup</h3><div class="generic">Generic: Multivitamin Complex</div><div class="desc">Comprehensive multivitamin and mineral supplement for daily nutritional support.</div><span class="prod-tag tag-red">Supplement</span></div>
+      <div class="prod-card"><div class="prod-icon">🧪</div><h3>PerkGast 20mg</h3><div class="generic">Generic: Pantoprazole</div><div class="desc">Proton pump inhibitor for management of acid-related gastrointestinal disorders.</div><span class="prod-tag tag-red">Gastrology</span></div>
+      <div class="prod-card"><div class="prod-icon">🩺</div><h3>PerkCal-D</h3><div class="generic">Generic: Calcium + Vitamin D3</div><div class="desc">Bone health supplement combining calcium carbonate with Vitamin D3 for maximum absorption.</div><span class="prod-tag tag-red">Supplement</span></div>
+      <div class="prod-card"><div class="prod-icon">💊</div><h3>PerkZol 400mg</h3><div class="generic">Generic: Metronidazole</div><div class="desc">Antiprotozoal and antibacterial agent for GI infections and anaerobic bacteria.</div><span class="prod-tag tag-red">Antiprotozoal</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="whyus" id="why">
+  <div class="container">
+    <div class="section-label" style="color:#6ba3d6">Our Strengths</div>
+    <h2 class="section-title">Why Choose Perk Pharma?</h2>
+    <p class="section-sub">Two decades of pharmaceutical excellence, built on quality, compliance, and customer trust.</p>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-num">01</div><h3>20+ Years Experience</h3><p>Established in 2004, we bring over two decades of pharmaceutical expertise to every product we manufacture.</p></div>
+      <div class="why-card"><div class="why-num">02</div><h3>GMP Certified Facility</h3><p>Our Gadoon manufacturing plant adheres to Good Manufacturing Practices ensuring every batch meets the highest safety standards.</p></div>
+      <div class="why-card"><div class="why-num">03</div><h3>DRAP Compliant</h3><p>All products are fully registered and compliant with Pakistan's Drug Regulatory Authority, giving healthcare providers full confidence.</p></div>
+      <div class="why-card"><div class="why-num">04</div><h3>Nationwide Distribution</h3><p>Our robust trading network ensures reliable supply across Pakistan — from major cities to remote districts.</p></div>
+      <div class="why-card"><div class="why-num">05</div><h3>Dual Business Model</h3><p>Both manufacturer and distributor — offering pharma partners a single, reliable source for all product needs.</p></div>
+      <div class="why-card"><div class="why-num">06</div><h3>Trust &amp; Quality</h3><p>"Name of Trust &amp; Quality" — every product reflects our dedication to patient health and partner satisfaction.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Contact Perk Pharma</h2>
+    <div class="divider"></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Our Locations</h3>
+        <div class="contact-item"><div class="c-icon">🏭</div><div><div class="c-label">Factory Address</div><div class="c-val">Plot No. 197/1-B Main Road,<br>Industrial Estate, Gadoon, Pakistan</div></div></div>
+        <div class="contact-item"><div class="c-icon">🏢</div><div><div class="c-label">Marketing Office</div><div class="c-val">Office No. 310, 3rd Floor,<br>Makkah Tower, Namak Mandi, Peshawar</div></div></div>
+        <div class="contact-item"><div class="c-icon">📞</div><div><div class="c-label">Factory Phone</div><div class="c-val">0938-270649</div></div></div>
+        <div class="contact-item"><div class="c-icon">📱</div><div><div class="c-label">Mobile</div><div class="c-val">+92 335 5056914</div></div></div>
+        <div class="contact-item"><div class="c-icon">✉️</div><div><div class="c-label">Email</div><div class="c-val">perkpharma05@gmail.com</div></div></div>
+        <a href="https://wa.me/923355056914?text=Hello%20Perk%20Pharma%2C%20I%20would%20like%20to%20inquire%20about%20your%20products." class="wa-btn" target="_blank">
+          <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+      <div class="contact-form">
+        <h3>Send an Inquiry</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+          <div class="form-group"><label>Company</label><input type="text" placeholder="Company name"></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+        <div class="form-group"><label>Inquiry Type</label>
+          <select><option>Select inquiry type</option><option>Product Information</option><option>Distribution / Franchise</option><option>Trading Partnership</option><option>General Inquiry</option></select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your requirement..."></textarea></div>
+        <button class="submit-btn" onclick="alert('Thank you for your inquiry! Our team will contact you shortly.')">Send Inquiry</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:6px"><strong>PPL Perk Pharma (Pvt) Ltd</strong> · "Name of Trust &amp; Quality"</p>
+  <p>Plot No. 197/1-B Industrial Estate, Gadoon Pakistan &nbsp;|&nbsp; perkpharma05@gmail.com &nbsp;|&nbsp; 0938-270649</p>
+  <p style="margin-top:10px;font-size:0.75rem;color:#3d5270">© 2004–2025 Perk Pharma Pvt Ltd. All rights reserved.</p>
+</footer>
+
+<script>
+// ── Particle System ──────────────────────────────────────────
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let isGold = false;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.getElementById('hero-section').offsetHeight;
+  initParticles();
+}
+
+function createParticle() {
+  const p = {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    speed: Math.random() / 5 + 0.1,
+    opacity: 1,
+    fadingOut: false,
+    fadeStart: Date.now() + Math.random() * 600 + 100,
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.speed = Math.random() / 5 + 0.1;
+      this.opacity = 1;
+      this.fadingOut = false;
+      this.fadeStart = Date.now() + Math.random() * 600 + 100;
+    },
+    update() {
+      this.y -= this.speed;
+      if (this.y < 0) this.reset();
+      if (!this.fadingOut && Date.now() > this.fadeStart) this.fadingOut = true;
+      if (this.fadingOut) { this.opacity -= 0.008; if (this.opacity <= 0) this.reset(); }
+    },
+    draw(ctx) {
+      if (isGold) {
+        ctx.fillStyle = `rgba(220,180,20,${this.opacity * 0.85})`;
+      } else {
+        const r = 255 - (Math.random() * 255) / 2;
+        ctx.fillStyle = `rgba(${r},220,255,${this.opacity})`;
+      }
+      ctx.fillRect(this.x, this.y, 0.5, Math.random() * 2 + 1);
+    }
+  };
+  return p;
+}
+
+function initParticles() {
+  const count = Math.floor((canvas.width * canvas.height) / 6000);
+  particles = [];
+  for (let i = 0; i < count; i++) particles.push(createParticle());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(ctx); });
+  requestAnimationFrame(animate);
+}
+
+resize();
+window.addEventListener('resize', resize);
+animate();
+
+// ── Gold mode toggle ─────────────────────────────────────────
+const midSpot = document.getElementById('midSpot');
+midSpot.addEventListener('click', () => {
+  isGold = !isGold;
+  const hero = document.getElementById('hero-section');
+  if (isGold) {
+    hero.style.background = '#0a0800';
+    hero.style.backgroundImage = 'linear-gradient(0deg,rgba(216,180,20,.08),rgba(120,90,0,.12))';
+    midSpot.style.boxShadow = '0 0 1em 0 #d8bd10';
+    document.getElementById('heroTitle').style.backgroundImage = 'radial-gradient(2em 2em at 50% 50%,transparent calc(var(--p,0%) - 2em),#fff calc(var(--p,0%) - 1em),#fff calc(var(--p,0%) - 0.4em),transparent var(--p,0%)),linear-gradient(0deg,#d4a820 30%,#f0d060 100%)';
+  } else {
+    hero.style.background = '#05060f';
+    hero.style.backgroundImage = 'linear-gradient(0deg,rgba(30,58,110,0.25),rgba(5,6,15,0.9))';
+    midSpot.style.boxShadow = '0 0 1em 0 #98c0ef';
+    document.getElementById('heroTitle').style.backgroundImage = 'radial-gradient(2em 2em at 50% 50%,transparent calc(var(--p,0%) - 2em),#fff calc(var(--p,0%) - 1em),#fff calc(var(--p,0%) - 0.4em),transparent var(--p,0%)),linear-gradient(0deg,#bad1f1 30%,#9dc3f7 100%)';
+  }
+});
+midSpot.addEventListener('mouseenter', () => {
+  midSpot.style.boxShadow = isGold ? '-0.3em 0.1em 0.2em 0 #98c0ef' : '-0.3em 0.1em 0.2em 0 #d8bd10';
+});
+midSpot.addEventListener('mouseleave', () => {
+  midSpot.style.boxShadow = isGold ? '0 0 1em 0 #d8bd10' : '0 0 1em 0 #98c0ef';
+});
+
+// ── Tab switch ────────────────────────────────────────────────
+function showTab(tab, btn) {
+  document.getElementById('tab-trading').classList.add('hidden');
+  document.getElementById('tab-promo').classList.add('hidden');
+  document.getElementById('tab-' + tab).classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
